@@ -35,6 +35,7 @@ class UNet(nn.Module):
         logits = self.outc(x)
         return logits
 
+    # 内存优化的重要模块 以时间换空间
     def use_checkpointing(self):
         self.inc = torch.utils.checkpoint(self.inc)
         self.down1 = torch.utils.checkpoint(self.down1)

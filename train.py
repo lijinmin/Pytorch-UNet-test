@@ -210,30 +210,30 @@ if __name__ == '__main__':
         logging.info(f'Model loaded from {args.load}')
 
     model.to(device=device)
-    # try:
-    #     train_model(
-    #         model=model,
-    #         epochs=args.epochs,
-    #         batch_size=args.batch_size,
-    #         learning_rate=args.lr,
-    #         device=device,
-    #         img_scale=args.scale,
-    #         val_percent=args.val / 100,
-    #         amp=args.amp
-    #     )
-    # except torch.cuda.OutOfMemoryError:
-    #     logging.error('Detected OutOfMemoryError! '
-    #                   'Enabling checkpointing to reduce memory usage, but this slows down training. '
-    #                   'Consider enabling AMP (--amp) for fast and memory efficient training')
-    #     torch.cuda.empty_cache()
-    #     model.use_checkpointing()
-    #     train_model(
-    #         model=model,
-    #         epochs=args.epochs,
-    #         batch_size=args.batch_size,
-    #         learning_rate=args.lr,
-    #         device=device,
-    #         img_scale=args.scale,
-    #         val_percent=args.val / 100,
-    #         amp=args.amp
-    #     )
+    try:
+        train_model(
+            model=model,
+            epochs=args.epochs,
+            batch_size=args.batch_size,
+            learning_rate=args.lr,
+            device=device,
+            img_scale=args.scale,
+            val_percent=args.val / 100,
+            amp=args.amp
+        )
+    except torch.cuda.OutOfMemoryError:
+        logging.error('Detected OutOfMemoryError! '
+                      'Enabling checkpointing to reduce memory usage, but this slows down training. '
+                      'Consider enabling AMP (--amp) for fast and memory efficient training')
+        torch.cuda.empty_cache()
+        model.use_checkpointing()
+        train_model(
+            model=model,
+            epochs=args.epochs,
+            batch_size=args.batch_size,
+            learning_rate=args.lr,
+            device=device,
+            img_scale=args.scale,
+            val_percent=args.val / 100,
+            amp=args.amp
+        )
